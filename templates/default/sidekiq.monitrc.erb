@@ -8,9 +8,8 @@
 
     check process sidekiq_<%= identifier.to_s %>
     with pidfile <%= pid_file.to_s %>
-    start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %> bundle exec sidekiq -C <%= conf_file.to_s %> -i <%= n %> -P <%= pid_file.to_s %><%= to_require.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
+    start program = "/bin/su - <%= node['deployer']['user'] %> -c 'sleep 1; cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %> bundle exec sidekiq -C <%= conf_file.to_s %> -i <%= n %> -P <%= pid_file.to_s %><%= to_require.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
     stop program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %> bundle exec sidekiqctl stop <%= pid_file %> <%= timeout %>'" with timeout <%= timeout + 10 %> seconds
-    if does not exist for 1 cycle then restart
     group sidekiq_<%= @application.to_s %>_group
 
 <% end %>
