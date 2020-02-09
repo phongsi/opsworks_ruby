@@ -46,7 +46,7 @@ end
 if node['platform_family'] == 'debian'
   node.default['ruby-ng']['ruby_version'] = node['ruby-version']
   include_recipe 'ruby-ng::dev'
-elsif if node['platform_version'] == '2'
+elsif node['platform_version'] == '2'
   ruby_pkg_version = node['ruby-version']
   execute 'install_ruby' do
     command "amazon-linux-extras install ruby#{ruby_pkg_version}"
